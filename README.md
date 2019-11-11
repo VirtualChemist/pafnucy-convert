@@ -5,7 +5,8 @@ The following instructions recount how I've gone about setting up my
 environment on the rice machines.
 
 ### Installing Python requirements
-I recommend creating a Python3 virtual environment first.
+I created a Python3 virtual environment, though you could probably skip this
+and move right to instaling requirements.
 ```
 virtualenv -p python3 venv
 ```
@@ -15,7 +16,7 @@ Activate the virtual environment by running:
 source venv/bin/activate
 ```
 
-Install dependencies by running:
+Install requirements by running:
 ```
 pip install -r requirements.txt
 ```
@@ -28,7 +29,7 @@ deactivate
 ### Installing MGL Tools
 
 Navigate to http://mgltools.scripps.edu/downloads. Copy the link to the proper
-Tarball installer. Run the following commands.
+tarball installer. Run the following commands.
 ```
 curl -O [link]
 tar -xzf [filename]
