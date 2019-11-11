@@ -9,7 +9,7 @@ HTML_SUCCESS = 200
 URL_TEMPLATE = "http://cactus.nci.nih.gov{}"
 FILE_TEMPLATE = "{}/{}.pdb"
 URL = URL_TEMPLATE.format('/translate')
-OUTDIR = 'pdb'
+OUTDIR = 'ligand_pdb'
 CSV_FILE = 'smiles.csv'
 
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -20,8 +20,8 @@ if not os.path.exists(OUTDIR):
     os.makedirs(OUTDIR)
 
 with open(CSV_FILE, 'r', encoding='utf-8') as csvfile:
-    reader = csv.reader(csvfile)
-    rows = list(reader)
+    reader = csv.reader(csvfile, delimiter='\t')
+    rows = list(reader)[1:]  # remove headings
     progress = 0
     for common, smiles in rows:
         progress += 1
