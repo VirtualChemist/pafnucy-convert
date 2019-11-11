@@ -56,3 +56,11 @@ Then run the script:
 ```
 python ligand_smiles_to_pdb.py
 ```
+
+## Converting ligand PDB files into PDBQT files
+Make sure you have your `MGL_ROOT` variable set. Then run:
+```
+./ligand_pdb_to_pdbqt.sh
+```
+This takes files from the `ligand_pdb` directory and puts the converted files
+in the `ligand_pdbqt` directory.
