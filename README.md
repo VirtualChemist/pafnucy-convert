@@ -58,6 +58,21 @@ Then run the script:
 python ligand_smiles_to_pdb.py
 ```
 
+## Getting relative side chain distances from amino acids
+
+Use the `side_chain_dists.py` script for this. It reads from the `aminoacid_pdbs`
+directory and outputs to the `aminoacid_dists` directory.
+
+If you haven't already, activate your virtual environment:
+```
+source venv/bin/activate
+```
+
+Then run the script:
+```
+python side_chain_dists.py
+```
+
 ## Converting ligand PDB files into PDBQT files
 Make sure you have your `MGL_ROOT` variable set. Then run:
 ```
