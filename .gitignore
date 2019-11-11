@@ -1,4 +1,6 @@
 ligand_pdb
 ligand_pdbqt
+protein_pdb
+protein_pdbqt
 venv
 *.swp

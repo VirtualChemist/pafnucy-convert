@@ -64,3 +64,11 @@ Make sure you have your `MGL_ROOT` variable set. Then run:
 ```
 This takes files from the `ligand_pdb` directory and puts the converted files
 in the `ligand_pdbqt` directory.
+
+## Converting protein PDB files into PDBQT files
+Make sure you have your `MGL_ROOT` variable set. Then run:
+```
+./protein_pdb_to_pdbqt.sh
+```
+This takes files from the `protein_pdb` directory and puts the converted files
+in the `protein_pdbqt` directory.
