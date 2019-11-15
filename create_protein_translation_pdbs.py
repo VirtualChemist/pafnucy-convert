@@ -1,6 +1,6 @@
 import os
 
-translationsfolder = 'translation_pdbs/'
+translationsfolder = 'protein_pdb/'
 distfolder = 'aminoacid_dists/'
 aminoacids = {'T': 'thr', 'S': 'ser', 'A': 'ala', 'E': 'glu', 'Q': 'gln', 'V': 'val', 'I': 'ile',\
 			  'C': 'cys', 'D': 'asp', 'K': 'lys', 'Y': 'tyr', 'M': 'met', 'N': 'asn', 'F': 'phe',\
