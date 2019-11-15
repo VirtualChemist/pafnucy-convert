@@ -22,7 +22,7 @@ with open('protein_translations.csv', 'r') as translations_file:
 		if w == 0:
 			continue
 		translation_line = line.split(',')
-		ID = translation_line[0].strip().replace('/', '.')
+		ID = translation_line[0].strip().replace('/', '.').replace(' ', '.')
 		new_f_name = translationsfolder + ID + '.pdb'
 		os.makedirs(os.path.dirname(new_f_name), exist_ok=True)
 		changes = translation_line[1].strip().split('/')
