@@ -73,6 +73,22 @@ Then run the script:
 python side_chain_dists.py
 ```
 
+## Getting the PDB files of translations from hNaV1.7
+
+Use the `create_protein_translation_pdbs.py` script for this. It reads from the 
+`aminoacid_dists` directory and the `base_protein.pdb` and `protein_translations.csv` 
+files and outputs to the `translation_pdbs` directory.
+
+If you haven't already, get the relative side chain distances:
+```
+python side_chain_dists.py
+```
+
+Then run the script:
+```
+python create_protein_translation_pdbs.py
+```
+
 ## Converting ligand PDB files into PDBQT files
 Make sure you have your `MGL_ROOT` variable set. Then run:
 ```
