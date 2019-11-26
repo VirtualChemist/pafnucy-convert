@@ -26,6 +26,25 @@ You can deactivate the virtual environment with:
 deactivate
 ```
 
+### Installing AutoDock Vina
+
+Navigate to http://vina.scripps.edu/download.html. Copy the link to the Linux
+download. Run the following commands.
+```
+curl -O [link]
+tar xzvf autodock_vina_1_1_2_linux_x86.tgz
+```
+
+I recommend adding this line to your `.bashrc` file, since the docking script
+relies on this variable being set.
+```
+export VINA_ROOT="[wherever you installed AutoDock Vina]"
+```
+Example:
+```
+export VINA_ROOT="$HOME/autodock_vina_1_1_2_linux_x86"
+```
+
 ### Installing MGL Tools
 
 Navigate to http://mgltools.scripps.edu/downloads. Copy the link to the proper
@@ -41,6 +60,10 @@ I recommend adding this line to your `.bashrc` file, since some of these
 scripts rely on this variable being set.
 ```
 export MGL_ROOT="[wherever you installed MGL Tools]"
+```
+Example:
+```
+export MGL_ROOT="$HOME/mgltools_x86_64Linux2_1.5.6"
 ```
 
 ## Converting ligand SMILES strings into PDB files
@@ -104,3 +127,13 @@ Make sure you have your `MGL_ROOT` variable set. Then run:
 ```
 This takes files from the `protein_pdb` directory and puts the converted files
 in the `protein_pdbqt` directory.
+
+## Docking the ligands to the proteins
+Make sure you have your `VINA_ROOT` variable set. Then run:
+```
+./dock.sh
+```
+This takes files from the `protein_pdbqt` and `ligand_pdbqt` directories and
+outputs files in the `docked` directory. It uses the configuration file
+`conf.txt`. Logs are placed in the `vina_logs` directory, and error logs are
+placed in the `vina_err` directory.
