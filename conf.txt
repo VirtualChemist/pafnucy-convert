@@ -1,6 +1,3 @@
-receptor = protein.pdbqt
-ligand = ligand.pdbqt
-
 center_x = 131
 center_y = 132
 center_z = 141
