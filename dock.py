@@ -14,6 +14,8 @@ if not os.path.exists(OUTDIR):
 
 vina = "{}/bin/vina".format(os.environ['VINA_ROOT'])
 
+errs = []
+
 with open(CSV_FILE, 'r', encoding='utf-8') as csvfile:
     reader = csv.reader(csvfile, delimiter='\t')
     rows = list(reader)
@@ -27,8 +29,14 @@ with open(CSV_FILE, 'r', encoding='utf-8') as csvfile:
         ligand_file = "{}/{}.pdbqt".format(LIGAND_DIR, ligand)
         outfile = "{}/{}_{}.pdb".format(OUTDIR, protein_id, ligand)
         logfile = "{}/{}_{}.txt".format(LOGDIR, protein_id, ligand)
-        out = subprocess.check_output([vina, '--receptor', protein_file,
-                '--ligand', ligand_file, '--config', CONFIG, '--out', outfile],
-                stderr=subprocess.STDOUT)
-        with open(logfile, 'a', encoding='utf-8') as log:
-            log.write(out.decode('utf-8'))
+        try:
+            out = subprocess.check_output([vina, '--receptor', protein_file,
+                    '--ligand', ligand_file, '--config', CONFIG, '--out',
+                    outfile], stderr=subprocess.STDOUT)
+            with open(logfile, 'a', encoding='utf-8') as log:
+                log.write(out.decode('utf-8'))
+        except subprocess.CalledProcessError as e:
+            errs.append((e, protein, ligand))
+
+for e, protein, ligand in errs:
+    print("Error docking ligand {} to receptor {}: {}", ligand, protein, e)
