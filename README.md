@@ -136,3 +136,9 @@ python3 dock.py
 This takes files from the `protein_pdbqt` and `ligand_pdbqt` directories and
 outputs files in the `docked` directory. It uses the configuration file
 `conf.txt`. Logs are placed in the `vina_logs` directory.
+
+By default, this command will not dock pairs that have already been docked. To
+do so, add the `-o` command line option:
+```
+python3 dock.py -o
+```
