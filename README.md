@@ -100,7 +100,7 @@ python side_chain_dists.py
 
 Use the `create_protein_translation_pdbs.py` script for this. It reads from the 
 `aminoacid_dists` directory and the `base_protein.pdb` and `protein_translations.csv` 
-files and outputs to the `translation_pdbs` directory.
+files and outputs to the `protein_pdb` directory.
 
 If you haven't already, get the relative side chain distances:
 ```
