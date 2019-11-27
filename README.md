@@ -131,9 +131,8 @@ in the `protein_pdbqt` directory.
 ## Docking the ligands to the proteins
 Make sure you have your `VINA_ROOT` variable set. Then run:
 ```
-./dock.sh
+python3 dock.py
 ```
 This takes files from the `protein_pdbqt` and `ligand_pdbqt` directories and
 outputs files in the `docked` directory. It uses the configuration file
-`conf.txt`. Logs are placed in the `vina_logs` directory, and error logs are
-placed in the `vina_err` directory.
+`conf.txt`. Logs are placed in the `vina_logs` directory.
