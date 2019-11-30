@@ -142,3 +142,18 @@ do so, add the `-o` command line option:
 ```
 python3 dock.py -o
 ```
+## Run Pafnucy through datapoints
+Add these two lines to your `.bashrc` file, since the
+script relies on these variables being set.
+```
+export PAFNUCY_ROOT="[wherever you installed Pafnucy]"
+export BLOCKED_ROOT="[pwd of smiles-convert/blocked]"
+```
+After having set these variables, run the following:
+```
+./run_pafnucy.sh
+```
+This script takes a datapoint, where each datapoint is represented by 
+a directory in `smiles-convert/blocked/*` and it outputs two files:
+`smiles-convert/blocked/*/complexes.hdf` and `smiles-convert/blocked/*/predictions.csv`
+in each datapoint directory. 
