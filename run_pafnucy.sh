@@ -1,4 +1,6 @@
 cd $PAFNUCY_ROOT
+conda env create -f environment_gpu.yml
+source activate pafnucy_env
 
 for file in $BLOCKED_ROOT/*/ 
 do
