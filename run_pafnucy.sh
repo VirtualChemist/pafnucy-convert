@@ -1,7 +1,4 @@
-cd pafnucy
-
-pwd=$(pwd)
-echo pwd
+cd $PAFNUCY_ROOT
 
 for file in $BLOCKED_ROOT/*/ 
 do
