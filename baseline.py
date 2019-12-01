@@ -24,7 +24,7 @@ def predict(features, w):
     return sign(dotProduct(w, features))
 
 
-def learnPredictor(trainExamples, testExamples, featureExtractor, numIters, eta):
+def learnPredictor(trainExamples, testExamples, featureExtractor, numIters, eta, normalize=False):
     '''
     Given |trainExamples| and |testExamples| (each one is a list of (x,y)
     pairs), a |featureExtractor| to apply to x, and the number of iterations to
@@ -44,10 +44,10 @@ def learnPredictor(trainExamples, testExamples, featureExtractor, numIters, eta)
         if t == numIters - 1:
             print('Training:')
             trainError, trainErrorN, trainErrorP = evaluatePredictor(trainExamples, predictor, printmetrics=True,\
-                title='Baseline Train Confusion Matrix', matrixfilename='baseline_train_matrix.pdf')
+                title='Baseline Train Confusion Matrix', matrixfilename='baseline_train_matrix.pdf', normalize=normalize)
             print('Testing:')
             testError, testErrorN, testErrorP = evaluatePredictor(testExamples, predictor, printmetrics=True,\
-                title='Baseline Test Confusion Matrix', matrixfilename='baseline_test_matrix.pdf')
+                title='Baseline Test Confusion Matrix', matrixfilename='baseline_test_matrix.pdf', normalize=normalize)
         #print("iteration {}, train error: {}, test error: {}, train error (-): {}, test error (-): {}, train error (+): {}, test error (+): {}".format(t,
         #    trainError, testError, trainErrorN, testErrorN, trainErrorP,
         #    testErrorP))
@@ -97,7 +97,7 @@ def readDataset():
     return result
 
 
-def main():
+def main(normalize=False):
     dataset = readDataset()
     random.shuffle(dataset)
 
@@ -106,7 +106,7 @@ def main():
     testExamples = dataset[splitInd:]
 
     weights = learnPredictor(trainExamples, testExamples, extractFeatures,
-            numIters=50, eta=0.01)
+            numIters=50, eta=0.01, normalize=normalize)
 
 if __name__ == '__main__':
     main()

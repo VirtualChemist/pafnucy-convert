@@ -40,7 +40,7 @@ def readExamples(path):
     print('Read %d examples from %s' % (len(examples), path))
     return examples
 
-def evaluatePredictor(examples, predictor, printmetrics=False, title=None, matrixfilename=None):
+def evaluatePredictor(examples, predictor, printmetrics=False, title=None, matrixfilename=None, normalize=False):
     '''
     predictor: a function that takes an x and returns a predicted y.
     Given a list of examples (x, y), makes predictions based on |predict| and returns the fraction
@@ -91,7 +91,8 @@ def evaluatePredictor(examples, predictor, printmetrics=False, title=None, matri
     print('True Positive:', true_pos)
     if printmetrics:
         np.set_printoptions(precision=2)
-        plot_confusion_matrix.plot_confusion_matrix(np.array(y_true), np.array(y_pred), classes=np.array(class_names), title=title)
+        plot_confusion_matrix.plot_confusion_matrix(np.array(y_true), np.array(y_pred), classes=np.array(class_names), title=title,\
+            normalize=normalize)
         plt.savefig(matrixfilename, format='pdf')
     return 1.0 * error / len(examples), 1.0 * error_neg / num_neg, 1.0 * error_pos / num_pos
 

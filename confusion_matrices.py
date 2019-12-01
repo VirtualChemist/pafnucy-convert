@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 vinafolder = 'vina_logs/'
 blockedfolder = 'blocked/'
 metric = None
+normalize = None
 
 false_pos = 0
 true_neg = 0
@@ -31,6 +32,21 @@ while(True):
 		print()
 		continue 
 	metric = command
+	break
+
+while(True):
+	print('Normalize figure?')
+	print('Y for yes, N for no')
+	choice = input()
+	if len(choice) > 1 or choice not in 'YN':
+		print()
+		print('Please input one of [Y, N]')
+		print()
+		continue 
+	if choice == 'Y':
+		normalize = True
+	else:
+		normalize = False
 	break
 
 
@@ -108,7 +124,7 @@ with open('affinities_binary.csv', 'r') as examples:
 							true_pos += 1
 							y_pred.append('Will Bind')
 		else:
-			baseline.main()
+			baseline.main(normalize=normalize)
 			exit()
 
 print('False Positive:', false_pos)
@@ -117,7 +133,7 @@ print('False Negative:', false_neg)
 print('True Positive:', true_pos)
 np.set_printoptions(precision=2)
 plot_confusion_matrix.plot_confusion_matrix(np.array(y_true), np.array(y_pred), classes=np.array(class_names),
-                      title=title)
+                      title=title, normalize=normalize)
 plt.savefig(matrixfilename, format='pdf')
 
 
