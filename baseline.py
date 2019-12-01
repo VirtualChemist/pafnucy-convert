@@ -43,9 +43,11 @@ def learnPredictor(trainExamples, testExamples, featureExtractor, numIters, eta)
             increment(weights, -gradient_scale * eta, trainFeatures[i])
         if t == numIters - 1:
             print('Training:')
-            trainError, trainErrorN, trainErrorP = evaluatePredictor(trainExamples, predictor)
+            trainError, trainErrorN, trainErrorP = evaluatePredictor(trainExamples, predictor, printmetrics=True,\
+                title='Baseline Train Confusion Matrix', matrixfilename='baseline_train_matrix.pdf')
             print('Testing:')
-            testError, testErrorN, testErrorP = evaluatePredictor(testExamples, predictor)
+            testError, testErrorN, testErrorP = evaluatePredictor(testExamples, predictor, printmetrics=True,\
+                title='Baseline Test Confusion Matrix', matrixfilename='baseline_test_matrix.pdf')
         #print("iteration {}, train error: {}, test error: {}, train error (-): {}, test error (-): {}, train error (+): {}, test error (+): {}".format(t,
         #    trainError, testError, trainErrorN, testErrorN, trainErrorP,
         #    testErrorP))

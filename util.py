@@ -1,6 +1,9 @@
 
 import os, random, operator, sys
 from collections import Counter
+import plot_confusion_matrix
+import numpy as np
+import matplotlib.pyplot as plt
 
 def dotProduct(d1, d2):
     """
@@ -37,12 +40,15 @@ def readExamples(path):
     print('Read %d examples from %s' % (len(examples), path))
     return examples
 
-def evaluatePredictor(examples, predictor):
+def evaluatePredictor(examples, predictor, printmetrics=False, title=None, matrixfilename=None):
     '''
     predictor: a function that takes an x and returns a predicted y.
     Given a list of examples (x, y), makes predictions based on |predict| and returns the fraction
     of misclassiied examples.
     '''
+    y_true = []
+    y_pred = []
+    class_names = ['Won\'t Bind', 'Will Bind']
     error = 0
     error_neg = 0
     error_pos = 0
@@ -54,18 +60,23 @@ def evaluatePredictor(examples, predictor):
     true_pos = 0
     for x in examples:
         if x[2] == -1:
+            y_true.append('Won\'t Bind')
             num_neg += 1
             if predictor(x) != -1:
                 #did not get false, false positive
                 error += 1
                 error_neg += 1
                 false_pos += 1
+                y_pred.append('Will Bind')
             else:
+                y_pred.append('Won\'t Bind')
                 #did get false, true negative
                 true_neg += 1
         elif x[2] == 1:
+            y_true.append('Will Bind')
             num_pos += 1
             if predictor(x) != 1:
+                y_pred.append('Won\'t Bind')
                 #did not get true, false negative
                 error += 1
                 error_pos += 1
@@ -73,10 +84,15 @@ def evaluatePredictor(examples, predictor):
             else:
                 #did get true, true positive
                 true_pos += 1
+                y_pred.append('Will Bind')
     print('False Positive:', false_pos)
     print('True Negative:', true_neg)
     print('False Negative:', false_neg)
     print('True Positive:', true_pos)
+    if printmetrics:
+        np.set_printoptions(precision=2)
+        plot_confusion_matrix.plot_confusion_matrix(np.array(y_true), np.array(y_pred), classes=np.array(class_names), title=title)
+        plt.savefig(matrixfilename, format='pdf')
     return 1.0 * error / len(examples), 1.0 * error_neg / num_neg, 1.0 * error_pos / num_pos
 
 def outputWeights(weights, path):
