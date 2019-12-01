@@ -44,10 +44,10 @@ def learnPredictor(trainExamples, testExamples, featureExtractor, numIters, eta,
         if t == numIters - 1:
             print('Training:')
             trainError, trainErrorN, trainErrorP = evaluatePredictor(trainExamples, predictor, printmetrics=True,\
-                title='Baseline Train Confusion Matrix', matrixfilename='baseline_train_matrix.pdf', normalize=normalize)
+                title='Baseline Train Confusion Matrix', matrixfilename='confusion_matrices/baseline_train_matrix.pdf', normalize=normalize)
             print('Testing:')
             testError, testErrorN, testErrorP = evaluatePredictor(testExamples, predictor, printmetrics=True,\
-                title='Baseline Test Confusion Matrix', matrixfilename='baseline_test_matrix.pdf', normalize=normalize)
+                title='Baseline Test Confusion Matrix', matrixfilename='confusion_matrices/baseline_test_matrix.pdf', normalize=normalize)
         #print("iteration {}, train error: {}, test error: {}, train error (-): {}, test error (-): {}, train error (+): {}, test error (+): {}".format(t,
         #    trainError, testError, trainErrorN, testErrorN, trainErrorP,
         #    testErrorP))

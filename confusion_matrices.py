@@ -59,7 +59,7 @@ with open('affinities_binary.csv', 'r') as examples:
 
 		if metric == 'V':
 			title = 'Vina Confusion Matrix'
-			matrixfilename = 'vina_matrix.pdf'
+			matrixfilename = 'confusion_matrices/vina_matrix.pdf'
 			with open(vinafolder + protein_ligand + '.txt', 'r') as f:
 				start = None
 				for i, line in enumerate(f):
@@ -96,7 +96,7 @@ with open('affinities_binary.csv', 'r') as examples:
 							break
 		elif metric == 'P':
 			title = 'Original Pafnucy Confusion Matrix'
-			matrixfilename = 'pafnucy_matrix.pdf'
+			matrixfilename = 'confusion_matrices/pafnucy_matrix.pdf'
 			with open(blockedfolder +  protein_ligand + '.pdb/predictions.csv', 'r') as f:
 				for i, line in enumerate(f):
 					if i == 0: continue
