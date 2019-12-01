@@ -3,6 +3,10 @@ cd $PAFNUCY_ROOT
 conda env create -f environment_cpu.yml
 source activate pafnucy_env
 
+TRAINFILE="${olddir}/our_train.hdf"
+TESTFILE="${olddir}/our_test.hdf"
+VALFILE="${olddir}/our_val.hdf"
+
 # Stolen from https://stackoverflow.com/a/5533586
 shuffle() {
    local i tmp size max rand
@@ -38,23 +42,31 @@ let cutoff=train_len+test_len
 
 size=${#array[*]}
 for ((i=size-1; i>0; i--)); do
+    cp "${array[i]}pocket.mol2" "${array[i]}pocket$i.mol2"
+    cp "${array[i]}ligand.mol2" "${array[i]}ligand$i.mol2"
     if [ $i -lt $train_len ]; then
-        train_pockets+=("${array[i]}pocket.mol2")
-        train_ligands+=("${array[i]}ligand.mol2")
+        train_pockets+=("${array[i]}pocket$i.mol2")
+        train_ligands+=("${array[i]}ligand$i.mol2")
     elif [ $i -lt $cutoff ]; then
-        test_pockets+=("${array[i]}pocket.mol2")
-        test_ligands+=("${array[i]}ligand.mol2")
+        test_pockets+=("${array[i]}pocket$i.mol2")
+        test_ligands+=("${array[i]}ligand$i.mol2")
     else
-        val_pockets+=("${array[i]}pocket.mol2")
-        val_ligands+=("${array[i]}ligand.mol2")
+        val_pockets+=("${array[i]}pocket$i.mol2")
+        val_ligands+=("${array[i]}ligand$i.mol2")
     fi
 done
 
 echo "Preparing training data (${#train_pockets[*]} pairs)"
-python3 prepare.py -l ${train_ligands[@]} -p ${train_pockets[@]} -o our_train.hdf
+python3 prepare.py -l ${train_ligands[@]} -p ${train_pockets[@]} -o "$TRAINFILE"
 echo ""
 echo "Preparing test data (${#test_pockets[*]} pairs)"
-python3 prepare.py -l ${test_ligands[@]} -p ${test_pockets[@]} -o our_test.hdf
+python3 prepare.py -l ${test_ligands[@]} -p ${test_pockets[@]} -o "$TESTFILE"
 echo ""
 echo "Preparing validation data (${#val_pockets[*]} pairs)"
-python3 prepare.py -l ${val_ligands[@]} -p ${val_pockets[@]} -o our_val.hdf
+python3 prepare.py -l ${val_ligands[@]} -p ${val_pockets[@]} -o "$VALFILE"
+
+echo "Cleaning up temp files"
+for ((i=size-1; i>0; i--)); do
+    rm "${array[i]}pocket$i.mol2"
+    rm "${array[i]}ligand$i.mol2"
+done

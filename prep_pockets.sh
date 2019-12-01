@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # directory containing ligand_out.pdbqt from AutoDock Vina
-cd docked 
+cd docked
 for f in *; do
 	echo "Made new directory ../blocked/$f"
 	mkdir ../blocked/$f;
