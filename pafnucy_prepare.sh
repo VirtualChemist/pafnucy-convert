@@ -23,7 +23,7 @@ shuffle() {
    done
 }
 
-array=($olddir/blocked/*/)
+array=($olddir/blocked/*)
 
 shuffle
 
@@ -42,31 +42,38 @@ let cutoff=train_len+test_len
 
 size=${#array[*]}
 for ((i=size-1; i>0; i--)); do
-    cp "${array[i]}pocket.mol2" "${array[i]}pocket$i.mol2"
-    cp "${array[i]}ligand.mol2" "${array[i]}ligand$i.mol2"
+    id="$(basename -- ${array[i]})"
+    id="${id%.*}"
+    cp "${array[i]}/pocket.mol2" "${array[i]}/pocket_$id.mol2"
+    cp "${array[i]}/ligand.mol2" "${array[i]}/ligand_$id.mol2"
     if [ $i -lt $train_len ]; then
-        train_pockets+=("${array[i]}pocket$i.mol2")
-        train_ligands+=("${array[i]}ligand$i.mol2")
+        train_pockets+=("${array[i]}/pocket_$id.mol2")
+        train_ligands+=("${array[i]}/ligand_$id.mol2")
     elif [ $i -lt $cutoff ]; then
-        test_pockets+=("${array[i]}pocket$i.mol2")
-        test_ligands+=("${array[i]}ligand$i.mol2")
+        test_pockets+=("${array[i]}/pocket_$id.mol2")
+        test_ligands+=("${array[i]}/ligand_$id.mol2")
     else
-        val_pockets+=("${array[i]}pocket$i.mol2")
-        val_ligands+=("${array[i]}ligand$i.mol2")
+        val_pockets+=("${array[i]}/pocket_$id.mol2")
+        val_ligands+=("${array[i]}/ligand_$id.mol2")
     fi
 done
 
 echo "Preparing training data (${#train_pockets[*]} pairs)"
-python3 prepare.py -l ${train_ligands[@]} -p ${train_pockets[@]} -o "$TRAINFILE"
+python3 prepare.py -l ${train_ligands[@]} -p ${train_pockets[@]} -o \
+    "$TRAINFILE" --affinities "$olddir/affinities.csv"
 echo ""
 echo "Preparing test data (${#test_pockets[*]} pairs)"
-python3 prepare.py -l ${test_ligands[@]} -p ${test_pockets[@]} -o "$TESTFILE"
+python3 prepare.py -l ${test_ligands[@]} -p ${test_pockets[@]} -o "$TESTFILE" \
+    --affinities "$olddir/affinities.csv"
 echo ""
 echo "Preparing validation data (${#val_pockets[*]} pairs)"
-python3 prepare.py -l ${val_ligands[@]} -p ${val_pockets[@]} -o "$VALFILE"
+python3 prepare.py -l ${val_ligands[@]} -p ${val_pockets[@]} -o "$VALFILE" \
+    --affinities "$olddir/affinities.csv"
 
 echo "Cleaning up temp files"
 for ((i=size-1; i>0; i--)); do
-    rm "${array[i]}pocket$i.mol2"
-    rm "${array[i]}ligand$i.mol2"
+    id="$(basename -- ${array[i]})"
+    id="${id%.*}"
+    rm "${array[i]}/pocket_$id.mol2"
+    rm "${array[i]}/ligand_$id.mol2"
 done
