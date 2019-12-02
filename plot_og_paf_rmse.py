@@ -40,7 +40,7 @@ predictions = pd.DataFrame(data={'pdbid': np.array(ids),
                                  'real': np.array(affinity),
                                  'predicted': np.array(pred)})
 
-grid = sns.jointplot('real', 'predicted', data=predictions, color='green',
+grid = sns.jointplot('real', 'predicted', data=predictions, color='blue',
                      space=0.0, xlim=(0, 16), ylim=(0, 16),
                      annot_kws={'title': '(rmse=%.3f)' % rmse})
 
