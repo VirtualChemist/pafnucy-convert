@@ -1,11 +1,58 @@
+DIR_OUT="datasets"
+
+should_shuffle=0
+train_frac=1
+val_frac=0
+prefix="data"
+
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+    key="$1"
+
+    case $key in
+        -s|--shuffle)
+            should_shuffle=1
+            shift
+            ;;
+        -tr|--train)
+            train_frac="$2"
+            shift
+            shift
+            ;;
+        -v|--val)
+            val_frac="$2"
+            shift
+            shift
+            ;;
+        -te|--test)
+            test_frac="$2"
+            shift
+            shift
+            ;;
+        -p|--prefix)
+            prefix="$2"
+            shift
+            shift
+            ;;
+        *)
+            POSITIONAL+=("$1")
+            shift
+            ;;
+    esac
+done
+set -- "${POSITIONAL[@]}"
+
+mkdir -p ${DIR_OUT}
+
 olddir=$(pwd)
 cd $PAFNUCY_ROOT
 conda env create -f environment_cpu.yml
 source activate pafnucy_env
 
-TRAINFILE="${olddir}/our_train.hdf"
-TESTFILE="${olddir}/our_test.hdf"
-VALFILE="${olddir}/our_val.hdf"
+TRAINFILE="${olddir}/${DIR_OUT}/${prefix}_train.hdf"
+TESTFILE="${olddir}/${DIR_OUT}/${prefix}_test.hdf"
+VALFILE="${olddir}/${DIR_OUT}/${prefix}_val.hdf"
 
 # Stolen from https://stackoverflow.com/a/5533586
 shuffle() {
@@ -25,11 +72,14 @@ shuffle() {
 
 array=($olddir/blocked/*)
 
-shuffle
+if [ $should_shuffle ]
+then
+    shuffle
+fi
 
-let train_len=$(echo "scale=0; ${#array[*]}*0.80/1" | bc)
-let test_len=$(echo "scale=0; ${#array[*]}*0.10/1" | bc)
-let val_len=${#array[*]}-${train_len}-${test_len}
+let train_len=$(echo "scale=0; ${#array[*]}*${train_frac}/1" | bc)
+let val_len=$(echo "scale=0; ${#array[*]}*${val_frac}/1" | bc)
+let test_len=${#array[*]}-${train_len}-${val_len}
 
 train_pockets=()
 train_ligands=()
@@ -38,7 +88,7 @@ test_ligands=()
 val_pockets=()
 val_ligands=()
 
-let cutoff=train_len+test_len
+let cutoff=train_len+val_len
 
 size=${#array[*]}
 for ((i=size-1; i>0; i--)); do
@@ -50,25 +100,33 @@ for ((i=size-1; i>0; i--)); do
         train_pockets+=("${array[i]}/pocket_$id.mol2")
         train_ligands+=("${array[i]}/ligand_$id.mol2")
     elif [ $i -lt $cutoff ]; then
-        test_pockets+=("${array[i]}/pocket_$id.mol2")
-        test_ligands+=("${array[i]}/ligand_$id.mol2")
-    else
         val_pockets+=("${array[i]}/pocket_$id.mol2")
         val_ligands+=("${array[i]}/ligand_$id.mol2")
+    else
+        test_pockets+=("${array[i]}/pocket_$id.mol2")
+        test_ligands+=("${array[i]}/ligand_$id.mol2")
     fi
 done
 
 echo "Preparing training data (${#train_pockets[*]} pairs)"
 python3 prepare.py -l ${train_ligands[@]} -p ${train_pockets[@]} -o \
     "$TRAINFILE" --affinities "$olddir/affinities.csv"
-echo ""
-echo "Preparing test data (${#test_pockets[*]} pairs)"
-python3 prepare.py -l ${test_ligands[@]} -p ${test_pockets[@]} -o "$TESTFILE" \
-    --affinities "$olddir/affinities.csv"
-echo ""
-echo "Preparing validation data (${#val_pockets[*]} pairs)"
-python3 prepare.py -l ${val_ligands[@]} -p ${val_pockets[@]} -o "$VALFILE" \
-    --affinities "$olddir/affinities.csv"
+
+if [ $val_len -gt 0 ]
+then
+    echo ""
+    echo "Preparing validation data (${#val_pockets[*]} pairs)"
+    python3 prepare.py -l ${val_ligands[@]} -p ${val_pockets[@]} -o "$VALFILE" \
+        --affinities "$olddir/affinities.csv"
+fi
+
+if [ $test_len -gt 0 ]
+then
+    echo ""
+    echo "Preparing test data (${#test_pockets[*]} pairs)"
+    python3 prepare.py -l ${test_ligands[@]} -p ${test_pockets[@]} -o \
+        "$TESTFILE" --affinities "$olddir/affinities.csv"
+fi
 
 echo "Cleaning up temp files"
 for ((i=size-1; i>0; i--)); do

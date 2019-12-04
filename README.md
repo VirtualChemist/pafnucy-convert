@@ -142,6 +142,36 @@ do so, add the `-o` command line option:
 ```
 python3 dock.py -o
 ```
+
+## Preparing HDF files for running through pafnucy
+Make sure you have your `PAFNUCY_ROOT` environment variable set. Then run
+```
+./pafnucy_prepare.sh [options]
+```
+This reads from the `blocked` directory and the `affinities.csv` file and
+outputs HDF files in the `datasets` directory for the training, validation, and
+test datasets. By default, these files are `data_train.hdf`, `data_val.hdf`,
+and `data_test.hdf` respectively, but these can be configured with the options
+below.
+
+Options (all are optional)
+* `--shuffle`, `-s`: shuffle the dataset before partitioning. The default is to
+  not shuffle if this option is not specified.
+* `--train`, `-tr`: a number between 0 and 1 representing the fraction of the
+  dataset that should be used for training. This is 1 by default.
+* `--val`, `-v`: a number between 0 and 1 representing the fraction of the
+  dataset that should be used for validation. This is 0 by default.
+* `--prefix`, `-p`: the prefix to use for the data files. This is "data" by
+  default.
+
+The portion of the dataset that is not partitioned to the training or
+validation set will be partitioned to the test set.
+
+Example:
+```
+./pafnucy_prepare.sh --shuffle --train 0.8 --val 0.1 --prefix data2
+```
+
 ## Run Pafnucy through datapoints
 Add these two lines to your `.bashrc` file, since the
 script relies on these variables being set.
