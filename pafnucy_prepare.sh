@@ -77,9 +77,12 @@ then
     shuffle
 fi
 
-let train_len=$(echo "scale=0; ${#array[*]}*${train_frac}/1" | bc)
-let val_len=$(echo "scale=0; ${#array[*]}*${val_frac}/1" | bc)
-let test_len=${#array[*]}-${train_len}-${val_len}
+size=${#array[*]}
+echo "Found ${size} pairs"
+
+let train_len=$(echo "scale=0; ${size}*${train_frac}/1" | bc)
+let val_len=$(echo "scale=0; ${size}*${val_frac}/1" | bc)
+let test_len=${size}-${train_len}-${val_len}
 
 train_pockets=()
 train_ligands=()
@@ -90,8 +93,7 @@ val_ligands=()
 
 let cutoff=train_len+val_len
 
-size=${#array[*]}
-for ((i=size-1; i>0; i--)); do
+for ((i=size-1; i>=0; i--)); do
     id="$(basename -- ${array[i]})"
     id="${id%.*}"
     cp "${array[i]}/pocket.mol2" "${array[i]}/pocket_$id.mol2"
