@@ -10,7 +10,7 @@ URL_TEMPLATE = "http://cactus.nci.nih.gov{}"
 FILE_TEMPLATE = "{}/{}.pdb"
 URL = URL_TEMPLATE.format('/translate')
 OUTDIR = 'ligand_pdb'
-CSV_FILE = 'smiles.csv'
+DATA_FILE = 'data.txt'
 
 ssl._create_default_https_context = ssl._create_unverified_context
 br = mechanize.Browser()
@@ -19,13 +19,14 @@ br.set_handle_robots(False)
 if not os.path.exists(OUTDIR):
     os.makedirs(OUTDIR)
 
-with open(CSV_FILE, 'r', encoding='utf-8') as csvfile:
+with open(DATA_FILE, 'r', encoding='utf-8') as csvfile:
     reader = csv.reader(csvfile, delimiter='\t')
-    rows = list(reader)[1:]  # remove headings
+    rows = list(reader)[1:]
+    data = set(( (row[1], row[2]) for row in rows ))
     progress = 0
-    for common, smiles in rows:
+    for common, smiles in data:
         progress += 1
-        print("Converting compound {}/{}: {}".format(progress, len(rows), common))
+        print("Converting compound {}/{}: {}".format(progress, len(data), common))
         print('  Opening connection')
         br.open(URL)
         br.select_form(name='form')

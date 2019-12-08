@@ -112,7 +112,7 @@ done
 
 echo "Preparing training data (${#train_pockets[*]} pairs)"
 python3 prepare.py -l ${train_ligands[@]} -p ${train_pockets[@]} -o \
-    "$TRAINFILE" --affinities "$olddir/affinities.csv"
+    "$TRAINFILE" --affinities "$olddir/data.txt"
 
 if [ $val_len -gt 0 ]
 then
