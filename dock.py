@@ -7,7 +7,7 @@ PROTEIN_DIR = 'protein_pdbqt'
 LIGAND_DIR = 'ligand_pdbqt'
 OUTDIR = 'docked'
 LOGDIR = 'vina_logs'
-CSV_FILE = 'pairs.csv'
+DATA_FILE = 'data.txt'
 CONFIG = 'conf.txt'
 
 
@@ -19,11 +19,13 @@ def dock(overwrite):
 
     errs = []
 
-    with open(CSV_FILE, 'r', encoding='utf-8') as csvfile:
+    with open(DATA_FILE, 'r', encoding='utf-8') as csvfile:
         reader = csv.reader(csvfile, delimiter='\t')
         rows = list(reader)
         progress = 0
-        for ligand, protein in rows:
+        for row in rows[1:]:
+            ligand = row[1]
+            protein = row[3]
             progress += 1
             protein_id = protein.strip().replace('/', '.').replace(' ', '.')
             protein_file = "{}/{}.pdbqt".format(PROTEIN_DIR, protein_id)
@@ -32,10 +34,10 @@ def dock(overwrite):
             outfile = "{}/{}_{}.pdb".format(OUTDIR, protein_id, ligand)
             if not overwrite and os.path.exists(outfile):
                 print("Already docked pair {}/{}: {} to {}".format(progress,
-                        len(rows), ligand, protein))
+                        len(rows) - 1, ligand, protein))
             else:
-                print("Docking pair {}/{}: {} to {}".format(progress, len(rows),
-                        ligand, protein))
+                print("Docking pair {}/{}: {} to {}".format(progress,
+                        len(rows) - 1, ligand, protein))
                 try:
                     out = subprocess.check_output([vina, '--receptor',
                             protein_file, '--ligand', ligand_file, '--config',

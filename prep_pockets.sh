@@ -4,7 +4,7 @@
 cd docked
 for f in *; do
 	echo "Made new directory ../blocked/$f"
-	mkdir ../blocked/$f;
+	mkdir -p ../blocked/$f;
 	echo "Copy ligand output into ../blocked/$f"
 	cp $f ../blocked/$f/ligand_out.pdbqt
 	PROTEIN=`echo $f | cut -d'_' -f1`;
@@ -13,9 +13,9 @@ for f in *; do
 done
 
 # run PyMol script to get block files
-conda activate py3
+# conda activate py3
 # directory containing ligand and pocket files
-cd blocked
+cd ../blocked
 for dir in *; do
 	echo "cd $dir";
 	cd $dir;

@@ -115,3 +115,42 @@ mode |   affinity | dist from best mode
    8         -6.6      2.634      4.801
    9         -6.6      4.417      6.347
 Writing output ... done.
+#################################################################
+# If you used AutoDock Vina in your work, please cite:          #
+#                                                               #
+# O. Trott, A. J. Olson,                                        #
+# AutoDock Vina: improving the speed and accuracy of docking    #
+# with a new scoring function, efficient optimization and       #
+# multithreading, Journal of Computational Chemistry 31 (2010)  #
+# 455-461                                                       #
+#                                                               #
+# DOI 10.1002/jcc.21334                                         #
+#                                                               #
+# Please see http://vina.scripps.edu for more information.      #
+#################################################################
+
+Detected 8 CPUs
+Reading input ... done.
+Setting up the scoring function ... done.
+Analyzing the binding site ... done.
+Using random seed: -639749640
+Performing search ... 
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+done.
+Refining results ... done.
+
+mode |   affinity | dist from best mode
+     | (kcal/mol) | rmsd l.b.| rmsd u.b.
+-----+------------+----------+----------
+   1         -7.1      0.000      0.000
+   2         -7.0      8.505     13.170
+   3         -6.9     12.308     14.239
+   4         -6.9      3.515      5.494
+   5         -6.9      9.740     13.605
+   6         -6.8      2.469      3.648
+   7         -6.7      8.628     12.957
+   8         -6.7      2.760      4.938
+   9         -6.5     10.765     13.594
+Writing output ... done.

@@ -66,6 +66,18 @@ Example:
 export MGL_ROOT="$HOME/mgltools_x86_64Linux2_1.5.6"
 ```
 
+### Installing PyMol
+Navigate to https://pymol.org/2/#download. Copy the link for the proper install
+file. Run the following commands.
+```
+curl -O [link]
+tar -jxf [filename]
+```
+
+Add pymol to your path by modifying your `.bashrc`. For example:
+```
+export PATH="$HOME/pymol/bin:$PATH"
+```
 ## Converting ligand SMILES strings into PDB files
 
 Use the `ligand_smiles_to_pdb.py` script for this. It reads from `smiles.csv`
@@ -142,6 +154,15 @@ do so, add the `-o` command line option:
 ```
 python3 dock.py -o
 ```
+
+## Blocking the docked pairs
+Make sure you've installed PyMol and are running version 2.3.4.
+```
+./prep_pockets.sh
+```
+This takes files from the `docked` directory, creates a directory for each file
+in the `blocked` directory, and creates protein and ligand files in each
+created directory.
 
 ## Preparing HDF files for running through pafnucy
 Make sure you have your `PAFNUCY_ROOT` environment variable set. Then run
