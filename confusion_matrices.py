@@ -50,12 +50,12 @@ while(True):
 	break
 
 
-with open('affinities_binary.csv', 'r') as examples:
+with open('data.txt', 'r') as examples:
 	for j, example in enumerate(examples):
 		if j == 0: continue
-		row = example.split(',')
-		protein_ligand = row[0].replace('ligand_', '')
-		klass = int(row[1])
+		row = example.split('\t')
+		protein_ligand = row[13].replace('ligand_', '')
+		klass = int(row[10])
 
 		if metric == 'V':
 			title = 'Vina Confusion Matrix'
@@ -135,6 +135,3 @@ np.set_printoptions(precision=2)
 plot_confusion_matrix.plot_confusion_matrix(np.array(y_true), np.array(y_pred), classes=np.array(class_names),
                       title=title, normalize=normalize)
 plt.savefig(matrixfilename, format='pdf')
-
-
-
