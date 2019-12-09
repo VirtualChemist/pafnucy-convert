@@ -67,16 +67,26 @@ export MGL_ROOT="$HOME/mgltools_x86_64Linux2_1.5.6"
 ```
 
 ### Installing PyMol
-Navigate to https://pymol.org/2/#download. Copy the link for the proper install
-file. Run the following commands.
+The version of PyMol pre-installed on the rice machines is old, so you must
+install a new version. Navigate to https://pymol.org/2/#download. Copy the link
+for the proper install file. Run the following commands.
 ```
 curl -O [link]
 tar -jxf [filename]
 ```
 
-Add pymol to your path by modifying your `.bashrc`. For example:
+Do NOT add `pymol/bin` to your path. It includes an anaconda installation that
+may mess with things. Instead, create a symlink to the PyMol binary somewhere
+in your path. For example, I ran
 ```
-export PATH="$HOME/pymol/bin:$PATH"
+cd ~
+mkdir bin
+cd bin
+ln -s ~/pymol/bin/pymol pymol
+```
+and added this line to my `.bashrc` file:
+```
+export PATH="$HOME/bin:$PATH"
 ```
 ## Converting ligand SMILES strings into PDB files
 
