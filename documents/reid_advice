@@ -1,0 +1,37 @@
+How to freeze layers:
+#########################################################################
+- Modify train function in net.py
+	    optimizer = tf.train.AdamOptimizer(learning_rate, name='optimizer')
+            train = optimizer.minimize(cost, global_step=global_step,
+                                       name='train')
+- Add a variable array
+	opt = tf.train.GradientDescentOptimizer(learning_rate=eta)
+	train_op = opt.minimize(loss, var_list=[variables to optimize over])
+	This prevented opt from updating the variables not in var_list.
+
+- In array, list tensors you want frozen while training
+- Run your retraining script (retrain.py) to retrain
+- Don't call stopGradient.
+
+How to perform k-fold cross validation:
+#########################################################################
+- In your retrain.py script,
+	- load data
+	- split np data array into k groups
+
+- for each group:
+	- retrain Pafnucy (consider altering keep_prob to implement dropout.)
+	- calculate error on hold-out set (# load and use the new model)
+	- final error is average over all sets
+	- everytime you retrain, start from a fresh model.
+
+for x_train, y_train, x_test, y_test in kfold(X, Y):
+
+    train(x_train, y_train)
+
+    y_test_hat = test(x_test)
+
+    error += loss(y, y_test_hat)
+
+
+mean(errors)
