@@ -47,7 +47,7 @@ mkdir -p ${DIR_OUT}
 
 olddir=$(pwd)
 cd $PAFNUCY_ROOT
-conda env create -f environment_cpu.yml
+conda env create -f environment_gpu.yml
 source activate pafnucy_env
 
 TRAINFILE="${olddir}/${DIR_OUT}/${prefix}_train.hdf"

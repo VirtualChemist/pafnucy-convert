@@ -1,4 +1,4 @@
-# Helper Scripts
+# Pafnucy Data Conversion Scripts
 
 ## Setting up your environment
 The following instructions recount how I've gone about setting up my
@@ -88,6 +88,21 @@ and added this line to my `.bashrc` file:
 ```
 export PATH="$HOME/bin:$PATH"
 ```
+
+### Cloning Pafnucy
+Clone the repository:
+```
+git clone git@gitlab.com:jspayd/pafnucy.git
+```
+Add this line to your `.bashrc`:
+```
+export PAFNUCY_ROOT="[wherever you cloned pafnucy to]"
+```
+For example:
+```
+export PAFNUCY_ROOT="$HOME/pafnucy"
+```
+
 ## Converting ligand SMILES strings into PDB files
 
 Use the `ligand_smiles_to_pdb.py` script for this. It reads from `smiles.csv`
@@ -202,19 +217,3 @@ Example:
 ```
 ./pafnucy_prepare.sh --shuffle --train 0.8 --val 0.1 --prefix data2
 ```
-
-## Run Pafnucy through datapoints
-Add these two lines to your `.bashrc` file, since the
-script relies on these variables being set.
-```
-export PAFNUCY_ROOT="[wherever you installed Pafnucy]"
-export BLOCKED_ROOT="[pwd of smiles-convert/blocked]"
-```
-After having set these variables, run the following:
-```
-./run_pafnucy.sh
-```
-This script takes a datapoint, where each datapoint is represented by 
-a directory in `smiles-convert/blocked/*` and it outputs two files:
-`smiles-convert/blocked/*/complexes.hdf` and `smiles-convert/blocked/*/predictions.csv`
-in each datapoint directory. 
