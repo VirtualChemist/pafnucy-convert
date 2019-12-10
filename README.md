@@ -190,7 +190,13 @@ in the `blocked` directory, and creates protein and ligand files in each
 created directory.
 
 ## Preparing HDF files for running through pafnucy
-Make sure you have your `PAFNUCY_ROOT` environment variable set. Then run
+Make sure you have your `PAFNUCY_ROOT` environment variable set. If using the
+GPU environment, use one of the oat machines by running the following command
+from one of the rice machines:
+```
+srun --pty --partition=gpu --gres=gpu:1 --qos=interactive $SHELL -l
+```
+Then run:
 ```
 ./pafnucy_prepare.sh [options]
 ```
