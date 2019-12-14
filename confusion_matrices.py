@@ -24,11 +24,11 @@ matrixfilename = None
 
 while(True):
 	print('Which error metrics do you want?')
-	print('V for vina, P for original pafnucy, N for n-gram baseline')
+	print('V for vina, P for original pafnucy, N for n-gram baseline, R for retrained pafnucy')
 	command = input()
-	if len(command) > 1 or command not in 'VPN':
+	if len(command) > 1 or command not in 'VPNR':
 		print()
-		print('Please input one of [V, P, N]')
+		print('Please input one of [V, P, N, R]')
 		print()
 		continue 
 	metric = command
@@ -123,6 +123,38 @@ with open('data.txt', 'r') as examples:
 							#classification = 1
 							true_pos += 1
 							y_pred.append('Will Bind')
+
+		elif metric == 'R': #best retrained model, model 9
+			title = 'Retrained Pafnucy Confusion Matrix'
+			matrixfilename = 'confusion_matrices/retrained_pafnucy_matrix.pdf'
+			with open('results_retrained-2019-12-10T10_03_14-predictions.csv', 'r') as f:
+				for i, line in enumerate(f):
+					if i == 0: continue
+					retrained_pafnucy_line = line.split(',')
+					if protein_ligand == (retrained_pafnucy_line[1].strip().replace('/', '.').replace(' ', '.')\
+					 + '_' + retrained_pafnucy_line[2]):
+						pKi = float(retrained_pafnucy_line[14])
+						IC50 = (10 ** (-pKi)) * (10 ** 9) * 2
+						if klass == 0:
+							y_true.append('Won\'t Bind')
+							if IC50 >= 500:
+								#classification = 0 
+								true_neg += 1
+								y_pred.append('Won\'t Bind')
+							else:
+								#classification = 1
+								false_pos += 1
+								y_pred.append('Will Bind')
+						else: 
+							y_true.append('Will Bind')
+							if IC50 >= 500:
+								#classification = 0 
+								false_neg += 1
+								y_pred.append('Won\'t Bind')
+							else:
+								#classification = 1
+								true_pos += 1
+								y_pred.append('Will Bind')
 		else:
 			baseline.main(normalize=normalize)
 			exit()
